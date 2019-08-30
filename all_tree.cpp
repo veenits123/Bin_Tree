@@ -6,6 +6,7 @@ using namespace std;
 #define F first
 #define S second
 #define pb push_back
+//int x=0;
 
 class node{
 public:
@@ -189,7 +190,80 @@ int replace(node *root){
 	
 	return root->data+temp;
 }
-//
+//Is height balanced ??
+pair <int,bool> balanced(node *root){
+	if (root==NULL){
+		return {0,true};
+	}
+
+	pair <int,bool> lpart=balanced(root->left);
+	pair <int,bool> rpart=balanced(root->right);
+
+	int lh=lpart.F;
+	int rh=rpart.F;
+
+	if (abs(lh-rh)<=1 and lpart.S and rpart.S){
+		return {max(lh,rh)+1,true};
+	}
+	else {
+		return {max(lh,rh)+1,false};
+	}
+}
+//build Tree from array
+node *build_array(int a[],int st,int end){
+	if (st>end){
+		return NULL;
+	}
+	int mid=(st+end)/2;
+	node *root=new node(a[mid]);
+	
+	root->left=build_array(a,st,mid-1);
+	root->right=build_array(a,mid+1,end);
+	
+	return root;
+}
+//getting index of preoder element in inorder element
+int get_index(int in[],int n,int val){
+	for (int i=0;i<n;i++){
+		if (in[i]==val){
+			return i;
+		}
+	}
+}
+int x=0;
+//build tree from inorder and preorder
+node *build_pre_in(int pre[],int in[],int n,int st,int end){
+	if (st>end){
+		return NULL;
+	}
+	//we can also declare it globally
+	//static int x=0;//because we are going at a node only one time
+	node *root=new node(pre[x]);
+
+	x++;
+
+	int i=get_index(in,n,root->data);
+
+	root->left=build_pre_in(pre,in,n,st,i-1);
+	root->right=build_pre_in(pre,in,n,i+1,end);
+
+	return root;
+}
+//build tree from preorder and postorder
+node *build_pre_post(int pre[],int post[],int n,int st,int end){
+	if (st>end){
+		return NULL;
+	}
+	node *root=new node(pre[x]);
+	x++;
+	
+	int i=get_index(post,n,root->data);
+
+	root->left=build_pre_post(pre,post,n,st+1,i);
+	root->right=build_pre_post(pre,post,n,i+1,end-1);
+
+	return root;
+}
 
 int32_t main(){
 	
@@ -203,7 +277,7 @@ int32_t main(){
 	//code starts
 	//1 3 9  -1 -1 11 19 -1 -1 -1 7 15 -1 -1 -1
 
-	node *root=build();
+	//node *root=build();
 	//preorder(root);
 	//inorder(root);
 	//postorder(root);
@@ -215,8 +289,15 @@ int32_t main(){
 	//cout<<total_sum(root);
 	//cout<<diameter(root);
 	//cout<<diameter_(root).F<<" "<<diameter_(root).S;
-	replace(root);
-	preorder(root);
+	//replace(root);
+	//preorder(root);
+	//cout<<balanced(root).F<<" "<<balanced(root).S;
+	//int a[]={1,2,3,4,5,6};
+	//node *root=build_array(a,0,5);
+	int pre[]={1, 2, 4, 8, 9, 5, 3, 6, 7};
+	int post[]= {8, 9, 4, 5, 2, 6, 7, 3, 1};
+	node *root=build_pre_post(pre,post,9,0,8);
+	postorder(root);
 
 
 	return 0;
