@@ -254,73 +254,6 @@ node *barr(int a[],int n,int st,int end){
   return root;
 }
 
-void node_in_range(node *root,int k1,int k2){
-  if (root==NULL){
-    return ;
-  }
-  
-  
-
-  node_in_range(root->left,k1,k2);
-  if (root->data<=k2 and root->data>=k1){
-    cout<<root->data<<" ";
-  }
-  node_in_range(root->right,k1,k2);
-  
-  return ;
-}
-
-pair<bool,int> is_balanced(node *root){
-  if (root==NULL){
-    return {true,0};
-  }
-  pair<bool,int> lf=is_balanced(root->left);
-  pair<bool,int> rt=is_balanced(root->right);
-
-  int cur_height=max(lf.S,rt.S)+1;
-  if (lf.F and rt.F and abs(lf.S-rt.S)<=1){
-    return {true,cur_height};
-  }
-  return {false,cur_height};
-
-}
-node *del(node *root,int val){
-  if (root==NULL){
-    return NULL;
-  }
-  if (val<root->data){
-    root->left=del(root->left,val);
-    return root;
-  }
-  if (val>root->data){
-    root->right=del(root->right,val);
-    return root;
-  }
-  else{
-
-      // 0 child
-      if (root->left==NULL and root->right==NULL){
-          return NULL;
-      }
-      // 1 child
-      if (root->left==NULL and root->right!=NULL){
-        return root->right;
-      }
-      if (root->right==NULL and root->left!=NULL){
-        return root->left;
-      }
-      // 2 child
-      node *temp=root->right;
-      while (temp->left!=NULL){
-        temp=temp->left;
-      }
-      root->data=temp->data;
-     // delete temp;
-      root->right=del(root->right,temp->data);
-      return root;
-
-  }
-}
 int32_t main(){
   
   ios_base:: sync_with_stdio(false);
@@ -348,39 +281,17 @@ int32_t main(){
   // int pre[]={1,2,3,4,8,5,6,7};
   // int n=sizeof(in)/sizeof(int);
   int t;cin>>t;while(t--){
-  
     int n;cin>>n;
     int a[n];
-    node *root=NULL;
     for (int i=0;i<n;i++){
       cin>>a[i];
-      root=insert(root,a[i]);
-
     }
-    int m;cin>>m;
-    int b[m];
-    for (int i=0;i<m;i++){
-      cin>>b[i];
-      root=del(root,b[i]);
-    }
+    node *root=NULL;
   
-    preorder(root);
+  root=barr(a,n,0,n-1);
+  preorder(root);
+
   }
-    
-  //   int k1,k2;cin>>k1>>k2;
-    
-  
-  //   cout<<"# Preorder : ";
-  // preorder(root);
-  // cout<<"# Nodes within range are : ";
-  // node_in_range(root,k1,k2);
-
-
-  // }
-
-  // node *root=_build();
-
-  // cout<<(is_balanced(root).F?"true":"false");
 
   
   // node *root1=NULL;

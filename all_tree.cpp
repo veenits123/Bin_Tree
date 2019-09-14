@@ -6,7 +6,6 @@ using namespace std;
 #define F first
 #define S second
 #define pb push_back
-//int x=0;
 
 class node{
 public:
@@ -236,34 +235,39 @@ node *build_pre_in(int pre[],int in[],int n,int st,int end){
 	if (st>end){
 		return NULL;
 	}
+
 	//we can also declare it globally
 	//static int x=0;//because we are going at a node only one time
 	node *root=new node(pre[x]);
-
 	x++;
+
+	if (st==end){
+		return root;
+	}
+	
 
 	int i=get_index(in,n,root->data);
 
 	root->left=build_pre_in(pre,in,n,st,i-1);
 	root->right=build_pre_in(pre,in,n,i+1,end);
 
-	return root;
+	//return root;
 }
 //build tree from preorder and postorder
-node *build_pre_post(int pre[],int post[],int n,int st,int end){
-	if (st>end){
-		return NULL;
-	}
-	node *root=new node(pre[x]);
-	x++;
+// node *build_pre_post(int pre[],int post[],int n,int st,int end){
+// 	if (st>end){
+// 		return NULL;
+// 	}
+// 	node *root=new node(pre[x]);
+// 	x++;
 	
-	int i=get_index(post,n,root->data);
+// 	int i=get_index(post,n,root->data);
 
-	root->left=build_pre_post(pre,post,n,st+1,i);
-	root->right=build_pre_post(pre,post,n,i+1,end-1);
+// 	root->left=build_pre_post(pre,post,n,st+1,i);
+// 	root->right=build_pre_post(pre,post,n,i+1,end-1);
 
-	return root;
-}
+// 	return root;
+// }
 
 int32_t main(){
 	
@@ -294,10 +298,13 @@ int32_t main(){
 	//cout<<balanced(root).F<<" "<<balanced(root).S;
 	//int a[]={1,2,3,4,5,6};
 	//node *root=build_array(a,0,5);
-	int pre[]={1, 2, 4, 8, 9, 5, 3, 6, 7};
+	//int pre[]={1, 2, 4, 8, 9, 5, 3, 6, 7};
 	int post[]= {8, 9, 4, 5, 2, 6, 7, 3, 1};
-	node *root=build_pre_post(pre,post,9,0,8);
-	postorder(root);
+	int pre[]={5,3,7,1,6,4,8};
+   	int in[]={1,3,4,5,6,7,8};
+	node *root=build_pre_in(pre,in,7,0,6);
+	preorder(root);
+
 
 
 	return 0;

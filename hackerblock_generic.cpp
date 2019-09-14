@@ -268,7 +268,94 @@ node *build_pre_in(int pre[],int in[],int n,int st,int end){
 
 // 	return root;
 // }
+//hackerblocks
 
+node *__build(){
+	int x,no;cin>>x>>no;
+	node *root=new node(x);
+
+	if (no==0){
+		return root;
+	}
+	else if (no==1){
+		root->left=__build();
+	}
+	else {
+		root->left=__build();
+		root->right=__build();
+	}
+	return root;
+}
+int _sum(node *root,int k){
+	int sum=0;
+	if (root==NULL){
+		return 0;
+	}
+	if (k==1){
+		sum+=root->data;
+		return sum;
+	}
+	int ls=_sum(root->left,k-1);
+	int rs=_sum(root->right,k-1);
+	return ls+rs;
+
+}
+
+pair<bool,int> is_balanced(node *root){
+	if (root==NULL){
+		return {true,0};
+	}
+	pair<bool,int> lf=is_balanced(root->left);
+	pair<bool,int> rt=is_balanced(root->right);
+
+	int cur_height=max(lf.S,rt.S);
+	if (lf.F and rt.F and abs(lf.S-rt.S)<=1){
+		return {true,cur_height};
+	}
+	return {false,cur_height};
+
+}
+//hackerblock
+int get_(int in[],int n,int val){
+  for (int i=0;i<n;i++){
+    if (in[i]==val){
+      return i;
+    }
+  }
+}
+node *_build_(int pre[],int in[],int n,int st,int end){
+  node *root=NULL;
+  static int x=0;
+  if (st>end){
+    return NULL;
+  }
+  root=new node(pre[x++]);
+  if (st==end){
+    return root;
+  }
+  int ind=get_(in,n,root->data);
+
+  root->left=_build_(pre,in,n,st,ind-1);
+  root->right=_build_(pre,in,n,ind+1,end);
+  return root;
+}
+
+void display(node *root){
+	if (root==NULL){
+		return ;
+	}
+	if (root->left!=NULL) cout<<root->left->data;
+	else cout<<"END";
+	cout<<" => ";
+	cout<<root->data;
+	cout<<" <= ";
+	if (root->right!=NULL) cout<<root->right->data;
+	else cout<<"END";
+	cout<<endl;
+	display(root->left);
+	display(root->right);
+	return ;
+}
 int32_t main(){
 	
 	ios_base:: sync_with_stdio(false);
@@ -299,13 +386,32 @@ int32_t main(){
 	//int a[]={1,2,3,4,5,6};
 	//node *root=build_array(a,0,5);
 	//int pre[]={1, 2, 4, 8, 9, 5, 3, 6, 7};
-	int post[]= {8, 9, 4, 5, 2, 6, 7, 3, 1};
-	int pre[]={5,3,7,1,6,4,8};
-   	int in[]={1,3,4,5,6,7,8};
-	node *root=build_pre_in(pre,in,7,0,6);
-	preorder(root);
+	// int post[]= {8, 9, 4, 5, 2, 6, 7, 3, 1};
+	// int pre[]={5,3,7,1,6,4,8};
+ //   	int in[]={1,3,4,5,6,7,8};
+	// node *root=build_pre_in(pre,in,7,0,6);
+	// preorder(root);
+	//node *root=__build();
+	//bfs(root);
+	//int x;cin>>x;
+	//cout<<endl;
+	//cout<<_sum(root,x+1);
+	//preorder(root);
 
-
-
+	// int n,m;
+	// cin>>n;
+	// int a[n];
+	// for (int i=0;i<n;i++){
+	// 	cin>>a[i];
+	// }
+	// cin>>m;
+	// int b[m];
+	// for (int i=0;i<m;i++){
+	// 	cin>>b[i];
+	// }
+	// node *root=_build_(a,b,n,0,n-1);
+	// //preorder(root);
+	// display(root);
+	node *root=
 	return 0;
 }
